@@ -1,0 +1,279 @@
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      background-color: #302F2F;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      max-width: 1440px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .logo a {
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+    }
+
+    /* Desktop Navigation Links */
+    .nav-center {
+      display: none;
+      gap: 30px;
+    }
+
+    .nav-center a {
+      font-weight: 500;
+      color: white;
+      transition: color 0.3s;
+    }
+
+    .nav-center a:hover {
+      color: white;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .account-btn {
+      background-color: #facc15;
+      color: #302F2F;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 110%;
+      left: 0;
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 6px;
+      overflow: hidden;
+      min-width: 120px;
+      z-index: 999;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px 16px;
+      color: #333;
+      transition: background-color 0.2s;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #dbeafe;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .menu-btn {
+      display: block;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    /* Mobile Menu - Updated styling */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 100vw;
+      height: 40vh;
+      background-color: #302F2F;
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      padding: 10px;
+      transition: all 0.3s ease-in-out;
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+
+    .mobile-menu.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .mobile-menu-content {
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      justify-content: left;
+      height: 100%;
+      gap: 12px;
+    }
+
+    .mobile-menu a {
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 8px 25px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      text-align: left;
+      min-width: 140px;
+    }
+
+    .mobile-menu a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+
+    /* Close button for mobile menu */
+    .mobile-menu-close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1002;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      height: 70vh;
+      background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+        url('Lawang_Sewu_in_Semarang_City.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .hero-title {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .hero-subtitle {
+      font-size: 20px;
+      margin-bottom: 24px;
+    }
+
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .search-bar input {
+      flex-grow: 1;
+      padding: 12px;
+      border: none;
+      font-size: 16px;
+      outline: none;
+      color: #333;
+    }
+
+    .search-bar button {
+      background-color: #302F2F;
+      color: white;
+      border: none;
+      padding: 0 20px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .search-bar button:hover {
+      background-color: #302F2F;
+    }
+        footer {
+      background-color: #1f1f1f;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .footer-divider {
+      border-top: 3px dashed white;
+      width: 60%;
+      margin: 0 auto 1.5rem;
+    }
+
+    .footer-text {
+      margin: 0.5rem 0;
+    }
+
+    .footer-contact {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (min-width: 769px) {
+      .nav-center {
+        display: flex;
+      }
+      
+      .menu-btn {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 28px;
+      }
+
+      .hero-subtitle {
+        font-size: 16px;
+      }
+
+      .mobile-menu a {
+        font-size: 16px;
+      }
+    }
+
+    /* Prevent body scroll when menu is open - removed since menu is smaller now */

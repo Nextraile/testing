@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discover Semarang</title>
+  <!-- <link rel="stylesheet" href="/OnProgress/public/assets/css/style.css"> -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+  /* ================================================
+     Reset & Global Styles
+  ================================================ */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif';
+    color: #333;
+    line-height: 1.6;
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+
+  /* ================================================
+     Navbar – Desktop Styles (default)
+  ================================================ */
+  .nav-container {
+    background-color: #1f1f1f;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.715rem 1rem;
+    max-width: 1440px;
+    margin: auto;
+    background: none;
+  }
+
+  .logo a {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto;
+  }
+
+  /* Bagian link‐link utama */
+  .links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .links li {
+    color: white;
+    font-weight: 500;
+    transition: color 0.3s;
+    line-height: 1.6;
+  }
+  .links li a.outside-button:hover {
+    color: #facc15;
+  }
+
+  /* Bagian tombol “Akun” & “Login” di samping */
+  .links-button {
+    display: flex;
+  }
+  .links-button li a {
+    display: inline-block;
+    background-color: #facc15;
+    color: #333;
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .links-button li a.button:hover {
+    background-color: #302F2F;
+    color: white;
+  }
+
+  /* Tombol hamburger di desktop disembunyikan */
+  .menu {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+  }
+
+
+  /* ================================================
+     Footer Styles
+  ================================================ */
+  footer {
+    background-color: #1f1f1f;
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+    font-family: 'Poppins', sans-serif;
+  }
+  .footer-divider {
+    border-top: 3px dashed white;
+    width: 60%;
+    margin: 0 auto 1.5rem;
+  }
+  .footer-text {
+    margin: 0.5rem 0;
+  }
+  .footer-contact {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+
+  /* ================================================
+     Responsive (Mobile) – max‐width: 768px
+  ================================================ */
+  @media (max-width: 768px) {
+    /* Tampilkan tombol menu (hamburger) */
+    .menu {
+      display: block;
+    }
+
+    /* Sembunyikan nav‐links secara default */
+    .links {
+      display: none;
+      flex-direction: column;
+      gap: 0; 
+      background-color: #1f1f1f;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 100%;
+      padding: 0.5rem 0;
+      border-top: 1px solid #444;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      align-items: normal;
+    }
+
+    /* Setelah tombol diklik, tambahkan kelas .show untuk menampilkan */
+    .links.show {
+      display: flex;
+    }
+
+    /* Setiap item di dropdown */
+    .nav-links li {
+      margin: 0.5rem 1rem;
+    }
+    .links li a {
+      width: 100%;
+      text-align: left;
+      display: block;
+    }
+
+    /* Ubah layout navbar agar fleksibel menuju mobile */
+    .navbar {
+      /* Supaya container menyesuaikan tinggi isinya saat dropdown */
+      flex-wrap: wrap;
+    }
+  }
+
+  @media(max-width: 597px) {
+    .logo a { 
+      font-size: 1rem;
+    }
+
+    .links li a {
+      font-size: 75%;
+    }
+
+    .links-button li a {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    }
+
+    .menu {
+    font-size: 1rem;
+    color: white;
+  }
+}
+  
+</style>
+
+<body>
+  <div class="nav-container">
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.php?page=home">Discover Semarang</a>
+      </div>
+
+      <div class="nav-links">
+        <ul class="links" id="links">
+          <li><a href="index.php?page=home">Beranda</a></li>
+          <li><a href="index.php?page=list">List Destinasi</a></li>
+          <li><a href="index.php?page=admin">Admin Panel</a></li>
+        </ul>
+
+        <ul class="links-button">
+          <li><a href="index.php?page=profile" class="button">
+              <i class="fas fa-user" style="margin-right: 0.5rem;"></i>
+              <span style="font-weight: 700;">Akun</span></a></li>
+          <li><a href="index.php?page=login" class="button" style="font-weight: 700;">
+              <i class="fa-solid fa-right-to-bracket" style="margin-right: 0.5rem;"></i>Login</a></li>
+        </ul>
+      </div>
+
+      <!-- Tombol hamburger untuk mobile -->
+      <button class="menu" id="menu-toggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </nav>
+  </div>
+
+  <section>
+    <div style="height: 100vh;"></div>
+  </section>
+
+  <footer>
+    <div class="footer-divider"></div>
+    <p class="footer-text">Contact Us :</p>
+    <p class="footer-contact">contactdiscoversemarang@gmail.com</p>
+  </footer>
+
+  <!-- Pastikan mengganti require_once jadi path JS yang benar,
+       misalnya: <script src="assets/js/script.js"></script> -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const menuToggle = document.getElementById("menu-toggle");
+      const Links = document.getElementById("links");
+
+      menuToggle.addEventListener("click", () => {
+        Links.classList.toggle("show");
+      });
+    });
+  </script>
+</body>
+
+</html>

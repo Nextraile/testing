@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Semarang</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #333333;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: normal;
+        }
+
+        .user-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-icon {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            position: relative;
+        }
+
+        .menu-icon::before,
+        .menu-icon::after {
+            content: '';
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            position: absolute;
+            left: 0;
+        }
+
+        .menu-icon::before {
+            top: -8px;
+        }
+
+        .menu-icon::after {
+            top: 8px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .profile-header {
+            background-color: #333333;
+            height: 120px;
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background-color: #d9d9d9;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid white;
+        }
+
+        .form-container {
+            padding: 60px 30px 30px;
+        }
+
+        .form-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            text-align: left;
+            color: #333333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333333;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #f9f9f9;
+            color: #333333;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ffc107;
+        }
+
+        .upload-btn {
+            background-color: #ffc107;
+            color: #333;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .upload-btn:hover {
+            background-color: #e6ac00;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-save {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        .btn-save:hover {
+            background-color: #e6ac00;
+        }
+
+        .btn-cancel {
+            background-color: #333333;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background-color: #333333;
+        }
+
+        .footer {
+            background-color: #333333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .footer p {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Discover Semarang</h1>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="user-icon"><img src="circle-user.svg"></div>
+            <div class="menu-icon"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-avatar"><img src="circle-user.svg"></div>
+        </div>
+        
+        <div class="form-container">
+            <h2 class="form-title">Informasi Profil</h2>
+            
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" value="Budi Santoso" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" value="budisantoso@gmail.com" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Password Saat Ini</label>
+                <input type="password" class="form-input" value="••••••••••••••" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Password Baru</label>
+                <input type="password" class="form-input" value="••••••••••••••" readonly>
+            </div>
+            
+            <button class="upload-btn">Upload Foto Profil</button>
+            
+            <div class="button-group">
+                <button class="btn btn-save">Simpan</button>
+                <button class="btn btn-cancel">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Contact Us :</p>
+        <p>contactdiscoversemarang@gmail.com</p>
+    </div>
+
+    <script>
+        // Add some interactivity
+        document.querySelector('.upload-btn').addEventListener('click', function() {
+            alert('Fitur upload foto akan segera tersedia!');
+        });
+
+        document.querySelector('.btn-save').addEventListener('click', function() {
+            alert('Profil berhasil disimpan!');
+        });
+
+        document.querySelector('.btn-cancel').addEventListener('click', function() {
+            if(confirm('Apakah Anda yakin ingin membatalkan perubahan?')) {
+                // Reset form or go back
+                alert('Perubahan dibatalkan');
+            }
+        });
+    </script>
+</body>
+</html>
