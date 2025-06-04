@@ -6,7 +6,7 @@
             <?php if ($user['foto_profil'] && $user['foto_profil'] !== 'default.svg'): ?>
                 <img src="assets/img/profiles/<?= htmlspecialchars($user['foto_profil']) ?>" class="image-profile">
             <?php else: ?>
-                <img src="assets/img/profiles/default.svg" style="width: 150px; height: 150px; object-fit: cover;">
+                <img src="assets/img/profiles/default.svg" style="image-profile">
             <?php endif; ?>
         </div>
     </div>
@@ -31,6 +31,8 @@
             </div>
         <?php endif; ?>
 
+        <div class="edit-section">
+        <div class="form-username-email">
         <div class="form-group">
             <label for="username" class="form-label">Username</label>
             <input type="text" class="form-input" id="username" name="username"
@@ -41,16 +43,19 @@
             <input type="email" class="form-input" id="email" name="email"
                 value="<?= htmlspecialchars($user['email']) ?>" required>
         </div>
+    </div>
+        <div class="form-password">
         <div class="form-group">
             <label class="form-label">Password Baru</label>
-            <input type="password" class="form-input" id="password" name="password">
-            <small>Kosongkan jika tidak ingin mengubah password</small>
+            <input type="password" class="form-input" id="password" name="password" placeholder="Hanya untuk mengubah password">
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-bottom: 20px">
             <label class="form-label">Password Konfirmasi</label>
-            <input type="password" class="form-input" id="confirm_password" name="confirm_password">
+            <input type="password" class="form-input" id="confirm_password" name="confirm_password" placeholder="Hanya untuk mengubah password">
         </div>
-        <div class="form-group upload-image">
+    </div>
+</div>
+        <div class="form-group upload-image" style="margin-bottom: 10px">
             <label for="foto_profil" class="upload-btn">Upload Foto Profil</label>
             <input type="file" id="foto_profil" name="foto_profil" accept="image/*" hidden>
         </div>
@@ -58,6 +63,7 @@
             <button type="submit" class="btn btn-save">Simpan</button>
             <a href="index.php?page=profile" class="btn btn-cancel">Batal</a>
         </div>
+        
     </form>
 </div>
 </div>
