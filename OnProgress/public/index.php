@@ -72,6 +72,43 @@ switch($page) {
         $controller->updateProfile();
         break;
 
+        //admin routes
+    case 'admin-tabel-destinasi':
+        require_once __DIR__ . '/../app/controllers/UserController.php';
+        $controller = new UserController();
+        $controller->updateProfile();
+        break;
+
+    case 'admin-add-destinasi':
+        require_once __DIR__ . '/../app/controllers/UserController.php';
+        $controller = new UserController();
+        $controller->updateProfile();
+        break;
+
+    case 'admin-edit-destinasi':
+        require_once __DIR__ . '/../app/controllers/UserController.php';
+        $controller = new UserController();
+        $controller->updateProfile();
+        break;
+
+    case 'admin-delete-destinasi':
+        require_once __DIR__ . '/../app/controllers/UserController.php';
+        $controller = new UserController();
+        $controller->updateProfile();
+        break;
+
+    case 'admin-tabel-users':
+        require_once __DIR__ . '/../app/controllers/UserController.php';
+        $controller = new UserController();
+        $controller->updateProfile();
+        break;
+
+    case 'admin-edit-role':
+        require_once __DIR__ . '/../app/controllers/UserController.php';
+        $controller = new UserController();
+        $controller->updateProfile();
+        break;
+
     default:
         http_response_code(404);
         echo "Halaman tidak ditemukan";
