@@ -352,15 +352,19 @@
         <div class="main-content">
             <!-- Sidebar -->
             <aside class="sidebar">
-                <div class="sidebar-item active">Destinasi</div>
-                <div class="sidebar-item">Akses</div>
+                <div class="sidebar-item active">
+                    <a href="index?page=manage-destinasi">Destinasi</a>
+                </div>
+                <div class="sidebar-item active">
+                    <a href="index?page=manage-akses">Akses</a>
+                </div>
             </aside>
 
             <!-- Content Area -->
             <main class="content-area">
                 <div class="content-header">
                     <h3 class="content-title">Manajemen Destinasi</h3>
-                    <button class="btn-add" onclick="addDestination()">Tambah Destinasi</button>
+                    <a class="btn-add" href="index?page=create">Tambah Destinasi</a>
                 </div>
 
                 <div class="search-container">
@@ -372,7 +376,6 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>GAMBAR</th>
                                 <th>NAMA</th>
                                 <th>KATEGORI</th>
                                 <th>RATING</th>
@@ -433,7 +436,6 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${destination.id}</td>
-                    <td>-</td>
                     <td>${destination.name}</td>
                     <td>${destination.category}</td>
                     <td class="rating">${destination.rating}</td>

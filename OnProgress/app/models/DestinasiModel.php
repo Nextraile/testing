@@ -1,211 +1,119 @@
 <?php
 // File: app/models/DestinasiModel.php
 
-class DestinasiModel
-{
-    private $db;
+class DestinasiModel {
+    private PDO $db;
 
-    // Constructor: menerima koneksi database
-    public function __construct($db)
-    {
+    public function __construct(PDO $db) {
         $this->db = $db;
     }
 
-    public function addNewDestinasi(
-        //destinasi
-        $nama,
-        $deskripsi,
-        $deskripsi_rekomendasi,
-        $alamat,
-        $no_telepon,
-        $facebook,
-        $instagram,
-        $gmaps_link,
-        //gambar
-        $nama_file,
-        //kategori
-        $kategori_id,
-        $nama_kategori,
-        //tiket_masuk
-        $kategori_pengunjung,
-        $harga_weekday,
-        $harga_weekend,
-        $keterangan_tiket,
-        //waktu_operasional
-        $nama_hari,
-        $jam_buka,
-        $jam_tutup,
-        $keterangan_waktu_operasional
-        )
-    {
-        //insert destinasi
-        // Gunakan prepared statement untuk keamanan
-        $stmt1 = $this->db->prepare("INSERT INTO destinasi
-        (
-        nama,
-        deskripsi,
-        deskripsi_rekomendasi,
-        alamat,
-        no_telepon,
-        facebook,
-        instagram,
-        gmaps_link
-        )
-        VALUES (
-        :nama,
-        :deskripsi,
-        :deskripsi_rekomendasi,
-        :alamat,
-        :no_telepon,
-        :facebook,
-        :instagram,
-        :gmaps_link
-        )");
+    public function addDestinasi(array $d): int|false {
+        $sql = "
+            INSERT INTO destinasi 
+                (nama, deskripsi, deskripsi_rekomendasi, alamat, no_telepon, facebook, instagram, gmaps_link)
+            VALUES
+                (:nama, :deskripsi, :deskripsi_rekomendasi, :alamat, :no_telepon, :facebook, :instagram, :gmaps_link)
+        ";
+        $stmt = $this->db->prepare($sql);
 
-        $stmt1->bindParam(':nama', $nama);
-        $stmt1->bindParam(':deskripsi', $deskripsi);
-        $stmt1->bindParam(':deskripsi_rekomendasi', $deskripsi_rekomendasi);
-        $stmt1->bindParam(':alamat', $alamat);
-        $stmt1->bindParam(':no_telepon', $no_telepon);
-        $stmt1->bindParam(':facebook', $facebook);
-        $stmt1->bindParam(':instagram', $instagram);
-        $stmt1->bindParam(':gmaps_link', $gmaps_link);
-        $stmt1->execute();
+        $params = [
+            ':nama'                  => $d['nama'],
+            ':deskripsi'             => $d['deskripsi'],
+            ':deskripsi_rekomendasi' => $d['deskripsi_rekomendasi'] ?? '',
+            ':alamat'                => $d['alamat'],
+            ':no_telepon'            => $d['no_telepon'] ?? null,
+            ':facebook'              => $d['facebook'] ?? null,
+            ':instagram'             => $d['instagram'] ?? null,
+            ':gmaps_link'            => $d['gmaps_link'],
+        ];
 
-        $success = $stmt1->execute();
-        if (!$success) return false;
-        $destinasi_id = $this->db->lastInsertId();
+        if ($stmt->execute($params)) {
+            return (int)$this->db->lastInsertId();
+        }
 
-
-        //insert galeri
-        $stmt2 = $this->db->prepare("INSERT INTO galeri
-        (
-        destinasi_id,
-        nama_file
-        )
-        VALUES (
-        :destinasi_id,
-        :nama_file
-        )");
-
-        $stmt2->bindParam(':destinasi_id', $destinasi_id);
-        $stmt2->bindParam(':nama_file', $nama_file);
-        $stmt2->execute();
-
-        //insert kategori
-        $stmt3 = $this->db->prepare("INSERT INTO kategori
-        (
-        nama_kategori
-        )
-        VALUES (
-        :nama_kategori
-        )");
-
-        $stmt3->bindParam(':nama_kategori', $nama_kategori);
-        $stmt3->execute();
-
-        //insert destinasi_kategori
-        $stmt4 = $this->db->prepare("INSERT INTO destinasi_kategori
-        (
-        destinasi_id,
-        kategori_id
-        )
-        VALUES (
-        :destinasi_id,
-        :kategori_id
-        )");
-
-        $stmt4->bindParam(':destinasi_id', $destinasi_id);
-        $stmt4->bindParam(':kategori_id', $kategori_id);
-        $stmt4->execute();
-
-        //insert tiket_masuk
-        $stmt5 = $this->db->prepare("INSERT INTO tiket_masuk
-        (
-        destinasi_id,
-        kategori_pengunjung,
-        harga_weekday,
-        harga_weekend,
-        keterangan
-        )
-        VALUES (
-        :destinasi_id,
-        :kategori_pengunjung,
-        :harga_weekday,
-        :harga_weekend,
-        :keterangan
-        )");
-        $stmt5->bindParam(':destinasi_id', $destinasi_id);
-        $stmt5->bindParam(':kategori_pengunjung', $kategori_pengunjung);
-        $stmt5->bindParam(':harga_weekday', $harga_weekday);
-        $stmt5->bindParam(':harga_weekend', $harga_weekend);
-        $stmt5->bindParam(':keterangan', $keterangan_tiket);
-        $stmt5->execute();
-
-        //insert waktu_operasional
-        $stmt6 = $this->db->prepare("INSERT INTO waktu_operasional
-        (
-        destinasi_id,
-        nama_hari,
-        jam_buka,
-        jam_tutup,
-        keterangan
-        )
-        VALUES (
-        :destinasi_id,
-        :nama_hari,
-        :jam_buka,
-        :jam_tutup,
-        :keterangan
-        )");
-        $stmt6->bindParam(':destinasi_id', $destinasi_id);
-        $stmt6->bindParam(':nama_hari', $nama_hari);
-        $stmt6->bindParam(':jam_buka', $jam_buka);
-        $stmt6->bindParam(':jam_tutup', $jam_tutup);
-        $stmt6->bindParam(':keterangan', $keterangan_waktu_operasional);
-        $stmt6->execute();
+        return false;
     }
 
-    // Ambil semua destinasi untuk homepage
-    public function getDestinasiTableAdmin()
-    {
-        // Query database
-        $stmt = $this->db-> query("SELECT 
-        d.id,
-        d.nama,
-        k.nama_kategori,
-        r.rata_rating
-        FROM destinasi d
-        LEFT JOIN (
-            SELECT 
-                destinasi_id,
-                ROUND(AVG(rating), 1) AS rata_rating
-            FROM ulasan
-            GROUP BY destinasi_id
-        ) r ON d.id = r.destinasi_id
-        LEFT JOIN (
-            SELECT 
-                dk.destinasi_id,
-                GROUP_CONCAT(DISTINCT k.nama_kategori SEPARATOR ', ') AS kategori
-            FROM destinasi_kategori dk
-            JOIN kategori k ON dk.kategori_id = k.id
-            GROUP BY dk.destinasi_id
-        ) k ON d.id = k.destinasi_id;
-        ");
-        // nama, kategori, rating
-        // Kembalikan hasil sebagai array asosiatif
+    public function getAllDestinasi(int $limit, int $offset, string $search = ''): array {
+        $sql = "
+          SELECT d.id, d.nama,
+                 GROUP_CONCAT(k.nama_kategori SEPARATOR ', ') AS kategori,
+                 AVG(u.rating) AS rating
+          FROM destinasi d
+          LEFT JOIN destinasi_kategori dk ON d.id = dk.destinasi_id
+          LEFT JOIN kategori k             ON dk.kategori_id = k.id
+          LEFT JOIN ulasan u               ON d.id = u.destinasi_id
+        ";
+
+        $params = [];
+        if ($search !== '') {
+            $sql .= " WHERE d.nama LIKE :s OR k.nama_kategori LIKE :s ";
+            $params[':s'] = "%{$search}%";
+        }
+
+        $sql .= " GROUP BY d.id
+                  ORDER BY d.id DESC
+                  LIMIT :lim OFFSET :off";
+
+        $stmt = $this->db->prepare($sql);
+        // Bind pencarian
+        if (isset($params[':s'])) {
+            $stmt->bindValue(':s', $params[':s'], PDO::PARAM_STR);
+        }
+        // Bind limit/offset sebagai integer
+        $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Ambil detail destinasi berdasarkan ID
-//     public function getById($id)
-//     {
-//         // Gunakan prepared statement untuk keamanan
-//         $stmt = $this->db->prepare("SELECT * FROM destinasi WHERE id = :id");
-//         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-//         $stmt->execute();
+    public function countAllDestinasi(string $search = ''): int {
+        $sql = "
+          SELECT COUNT(DISTINCT d.id) AS total
+          FROM destinasi d
+          LEFT JOIN destinasi_kategori dk ON d.id = dk.destinasi_id
+          LEFT JOIN kategori k             ON dk.kategori_id = k.id
+        ";
+        $params = [];
+        if ($search !== '') {
+            $sql .= " WHERE d.nama LIKE :s OR k.nama_kategori LIKE :s";
+            $params[':s'] = "%{$search}%";
+        }
 
-//         // Kembalikan satu baris hasil
-//         return $stmt->fetch(PDO::FETCH_ASSOC);
-//     }
+        $stmt = $this->db->prepare($sql);
+        if (isset($params[':s'])) {
+            $stmt->bindValue(':s', $params[':s'], PDO::PARAM_STR);
+        }
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
+
+    public function deleteDestinasi(int $id): bool {
+        try {
+            $this->db->beginTransaction();
+
+            // Hapus child-table
+            foreach (['destinasi_kategori','galeri','tiket_masuk','waktu_operasional','ulasan'] as $table) {
+                $stmt = $this->db->prepare(
+                    "DELETE FROM {$table} WHERE destinasi_id = :id"
+                );
+                $stmt->execute([':id' => $id]);
+            }
+
+            // Hapus utama
+            $stmt = $this->db->prepare(
+                "DELETE FROM destinasi WHERE id = :id"
+            );
+            $stmt->execute([':id' => $id]);
+
+            $this->db->commit();
+            return true;
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            return false;
+        }
+    }
+    
 }

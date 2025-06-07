@@ -18,7 +18,7 @@ $role = get_user_role();
         <li><a href="index.php?page=list">List Destinasi</a></li>
         <li><a href="index.php?page=logout">Logout</a></li>
         <?php if (is_admin()): ?>
-          <li><a href="index.php?page=admin">Admin Panel</a></li>
+          <li><a href="index.php?page=destinasi">Admin Panel</a></li>
         <?php endif; ?>
       </ul>
 

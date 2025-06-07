@@ -72,41 +72,22 @@ switch($page) {
         $controller->updateProfile();
         break;
 
-        //admin routes
-    case 'admin-tabel-destinasi':
-        require_once __DIR__ . '/../app/controllers/UserController.php';
-        $controller = new UserController();
-        $controller->updateProfile();
+    case 'create':
+        require_once __DIR__ . '/../app/controllers/AdminDestinasiController.php';
+        $controller = new AdminDestinasiController($db);
+        $controller->create();
         break;
 
-    case 'admin-add-destinasi':
-        require_once __DIR__ . '/../app/controllers/UserController.php';
-        $controller = new UserController();
-        $controller->updateProfile();
+    case 'destinasi':
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        $controller = new AdminController($db);
+        $controller->destinasi();
         break;
 
-    case 'admin-edit-destinasi':
-        require_once __DIR__ . '/../app/controllers/UserController.php';
-        $controller = new UserController();
-        $controller->updateProfile();
-        break;
-
-    case 'admin-delete-destinasi':
-        require_once __DIR__ . '/../app/controllers/UserController.php';
-        $controller = new UserController();
-        $controller->updateProfile();
-        break;
-
-    case 'admin-tabel-users':
-        require_once __DIR__ . '/../app/controllers/UserController.php';
-        $controller = new UserController();
-        $controller->updateProfile();
-        break;
-
-    case 'admin-edit-role':
-        require_once __DIR__ . '/../app/controllers/UserController.php';
-        $controller = new UserController();
-        $controller->updateProfile();
+    case 'akses':
+        require_once __DIR__ . '/../app/controllers/AdminUserController.php';
+        $controller = new AdminUserController($db);
+        $controller->user();
         break;
 
     default:

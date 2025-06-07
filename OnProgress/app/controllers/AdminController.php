@@ -1,95 +1,41 @@
 <?php
-require_once __DIR__ . '/../models/Model.php';
+require_once __DIR__ . '/../models/DestinasiModel.php';
 
 class AdminController {
     private $model;
-
-    public function __construct() {
-        global $db;
-        require_once __DIR__ . '/../models/AdminModel.php';
-        $this->model = new AdminModel($db);
-    }
-
-    public function index() {
-        // Ambil data yang diperlukan untuk halaman admin
-        $data = $this->model->getAdminData();
-        
-        // Tampilkan view admin
-        require_once __DIR__ . '/../views/admin/index.php';
-    }
-
-    public function manageUsers() {
-        // Ambil daftar pengguna
-        $users = $this->model->getAllUsers();
-        
-        // Tampilkan view untuk mengelola pengguna
-        require_once __DIR__ . '/../views/admin/manage_users.php';
-    }
-
-    public function manageDestinations() {
-        // Ambil daftar destinasi
-        $destinations = $this->model->getAllDestinations();
-        
-        // Tampilkan view untuk mengelola destinasi
-        require_once __DIR__ . '/../views/admin/manage_destinations.php';
-    }
-
-    public function addDestination() {
-        // Proses penambahan destinasi
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['name'] ?? '';
-            $description = $_POST['description'] ?? '';
-            $location = $_POST['location'] ?? '';
-            
-            // Validasi input
-            if (empty($name) || empty($description) || empty($location)) {
-                $error = 'All fields are required.';
-                require_once __DIR__ . '/../views/admin/add_destination.php';
-                return;
-            }
-            
-            // Tambahkan destinasi
-            $this->model->addDestination($name, $description, $location);
-            header('Location: index.php?page=admin-manage-destinations');
-            exit;
-        }
-        
-        // Tampilkan form penambahan destinasi
-        require_once __DIR__ . '/../views/admin/add_destination.php';
+    
+    public function __construct($db) {
+        $this->model = new DestinasiModel($db);
     }
     
-    public function editDestination($id) {
-        // Proses pengeditan destinasi
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['name'] ?? '';
-            $description = $_POST['description'] ?? '';
-            $location = $_POST['location'] ?? '';
-            
-            // Validasi input
-            if (empty($name) || empty($description) || empty($location)) {
-                $error = 'All fields are required.';
-                require_once __DIR__ . '/../views/admin/edit_destination.php';
-                return;
+    public function destinasi() {
+
+        // Konfigurasi pagination
+        $perPage = 5;
+        // Gunakan 'p' untuk pagination, misal ?route=destinasi&p=2
+        $currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+        $offset = ($currentPage - 1) * $perPage;
+
+        $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+        $destinasi = $this->model->getAllDestinasi($perPage, $offset, $search);
+
+        $totalDestinasi = $this->model->countAllDestinasi($search);
+        $totalPages = ceil($totalDestinasi / $perPage);
+        
+        // Tangani aksi hapus
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+            $id = (int)$_POST['delete_id'];
+            if ($this->model->deleteDestinasi($id)) {
+                $_SESSION['success_message'] = 'Destinasi berhasil dihapus.';
+            } else {
+                $_SESSION['error_message'] = 'Gagal menghapus destinasi.';
             }
-            
-            // Update destinasi
-            $this->model->updateDestination($id, $name, $description, $location);
-            header('Location: index.php?page=admin-manage-destinations');
+            header('Location: ' . $_SERVER['REQUEST_URI']);
             exit;
         }
-        
-        // Ambil data destinasi untuk diedit
-        $destination = $this->model->getDestinationById($id);
-        
-        // Tampilkan form pengeditan destinasi
-        require_once __DIR__ . '/../views/admin/edit_destination.php';
-    }
 
-    public function deleteDestination($id) {
-        // Hapus destinasi
-        $this->model->deleteDestination($id);
-        header('Location: index.php?page=admin-manage-destinations');
-        exit;
+        // Tampilkan view
+        require_once __DIR__ . '/../views/admin/destinasi.php';
     }
 }
-?>

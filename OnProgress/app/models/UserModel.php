@@ -82,5 +82,63 @@ class UserModel {
         
         return $stmt->execute($params);
     }
+
+    public function getAllUsers(int $limit, int $offset, string $search = ''): array {
+        $sql = "SELECT id, username, email, role, tanggal_register
+                FROM users";
+        
+        $params = [];
+        if ($search !== '') {
+            $sql .= " WHERE username LIKE :search OR email LIKE :search";
+            $params[':search'] = "%{$search}%";
+        }
+
+        $sql .= " ORDER BY id DESC
+                  LIMIT :limit
+                  OFFSET :offset";
+
+        $stmt = $this->db->prepare($sql);
+
+        // Bind pagination sebagai integer
+        $stmt->bindValue(':limit',  $limit,  PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        // Bind search jika ada
+        if (isset($params[':search'])) {
+            $stmt->bindValue(':search', $params[':search'], PDO::PARAM_STR);
+        }
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countAllUsers(string $search = ''): int {
+        $sql = "SELECT COUNT(*) AS total FROM users";
+        
+        $params = [];
+        if ($search !== '') {
+            $sql .= " WHERE username LIKE :search OR email LIKE :search";
+            $params[':search'] = "%{$search}%";
+        }
+
+        $stmt = $this->db->prepare($sql);
+
+        if (isset($params[':search'])) {
+            $stmt->bindValue(':search', $params[':search'], PDO::PARAM_STR);
+        }
+
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return (int) ($row['total'] ?? 0);
+    }
+
+    public function updateUserRole(int $userId, string $newRole): bool {
+        $sql = "UPDATE users SET role = :role WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':role', $newRole, PDO::PARAM_STR);
+        $stmt->bindValue(':id',   $userId,  PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }
 ?>
