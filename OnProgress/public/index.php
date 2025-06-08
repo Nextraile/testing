@@ -6,6 +6,7 @@ require_once __DIR__ . '/../app/config/database.php';
 
 // 2. Tentukan halaman yang diminta user
 $page = $_GET['page'] ?? 'home';  // Jika tidak ada parameter, default ke home
+$id = $_GET['id'] ?? 0;
 
 // 3. Routing: Tentukan controller yang akan menangani request
 switch($page) {
@@ -18,10 +19,6 @@ switch($page) {
     case 'detail':
         require_once __DIR__ . '/../app/controllers/DestinasiController.php';
         $controller = new DestinasiController();
-        
-        // Ambil ID dari URL dan pastikan berupa angka
-        $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-        $controller->show($id);
         break;
     
      case 'login':
@@ -90,6 +87,11 @@ switch($page) {
         $controller->user();
         break;
 
+    case 'admin_destinasi_edit':
+        require_once __DIR__ . '/../app/controllers/AdminDestinasiController.php';
+        $controller = new AdminDestinasiController($db);
+        $controller->edit($id);
+        break;
     default:
         http_response_code(404);
         echo "Halaman tidak ditemukan";

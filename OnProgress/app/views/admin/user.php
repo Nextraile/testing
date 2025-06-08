@@ -1,44 +1,41 @@
 <?php require_once __DIR__ . '/../partials/header.php'; ?>
 
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0">Management User</h1>
-    </div>
-    
-    <?php if (isset($_SESSION['success_message'])): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <?= $_SESSION['success_message'] ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <?php unset($_SESSION['success_message']); ?>
-    <?php endif; ?>
-    
-    <?php if (isset($_SESSION['error_message'])): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?= $_SESSION['error_message'] ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <?php unset($_SESSION['error_message']); ?>
-    <?php endif; ?>
-    
-    <div class="card-admin mb-4">
-        <div class="card-body">
-            <form method="GET" class="d-flex">
-                <input type="text" name="search" class="form-control me-2" placeholder="Cari username atau email..." 
-                       value="<?= htmlspecialchars($search ?? '') ?>">
-                <button type="submit" class="btn btn-outline-primary">Cari</button>
-                
-                <?php if ($currentPage > 1): ?>
-                    <input type="hidden" name="page" value="<?= $currentPage ?>">
-                <?php endif; ?>
+<!-- Main Container -->
+<div class="admin-container">
+    <div class="main-content">
+        <!-- Content Area -->
+        <main class="content-area">
+            <div class="content-header">
+                <h1 class="content-title">Management User</h1>
+            </div>
+
+            <?php if (isset($_SESSION['success_message'])): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= $_SESSION['success_message'] ?>
+                </div>
+                <?php unset($_SESSION['success_message']); ?>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['error_message'])): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= $_SESSION['error_message'] ?>
+                </div>
+                <?php unset($_SESSION['error_message']); ?>
+            <?php endif; ?>
+
+            
+                <form method="GET">
+                    <div class="search-container">
+                    <input type="hidden" name="page" value="destinasi">
+                    <input type="text" name="search" class="search-input"
+                        placeholder="Cari username atau email..." value="<?= htmlspecialchars($search ?? '') ?>">
+                    <button type="submit" class="btn btn-black" style="font-weight: normal;">Cari</button>
+                </div>
             </form>
-        </div>
-    </div>
-    
-    <div class="card-admin">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
+            
+
+            <div class="table-container">
+                <table id="destinationTable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -49,7 +46,7 @@
                             <th>Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tableBody">
                         <?php if (count($users) > 0): ?>
                             <?php foreach ($users as $user): ?>
                                 <tr>
@@ -86,52 +83,49 @@
                     </tbody>
                 </table>
             </div>
-            
-            <div class="d-flex justify-content-between align-items-center mt-4">
+
+
+            <div class="pagination-container">
                 <div class="text-muted">
                     Total data: <strong><?= $totalUsers ?></strong> user
                 </div>
-                
-                <nav>
-                    <ul class="pagination mb-0">
-                        <?php if ($currentPage > 1): ?>
-                            <li class="page-item">
-                                <a class="page-link" 
-                                   href="?<?= http_build_query(['p' => $currentPage - 1, 'search' => $search]) ?>">
-                                    &laquo;
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                        
-                        <?php 
-                        $startPage = max(1, $currentPage - 2);
-                        $endPage = min($totalPages, $startPage + 4);
-                        
-                        if ($endPage - $startPage < 4) {
-                            $startPage = max(1, $endPage - 4);
-                        }
-                        
-                        for ($i = $startPage; $i <= $endPage; $i++): ?>
-                            <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
-                                <a class="page-link" 
-                                   href="?<?= http_build_query(['p' => $i, 'search' => $search]) ?>">
-                                    <?= $i ?>
-                                </a>
-                            </li>
-                        <?php endfor; ?>
-                        
-                        <?php if ($currentPage < $totalPages): ?>
-                            <li class="page-item">
-                                <a class="page-link" 
-                                   href="?<?= http_build_query(['p' => $currentPage + 1, 'search' => $search]) ?>">
-                                    &raquo;
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                    </ul>
-                </nav>
+                <ul class="pagination mb-0">
+                    <?php if ($currentPage > 1): ?>
+                        <li class="page-item">
+                            <a class="prevBtn"
+                                href="?page=akses&p=<?= $currentPage - 1 ?>&search=<?= urlencode($search ?? '') ?>">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php
+                    // Tampilkan maksimal 5 halaman di pagination
+                    $startPage = max(1, $currentPage - 2);
+                    $endPage = min($totalPages, $startPage + 4);
+
+                    if ($endPage - $startPage < 4) {
+                        $startPage = max(1, $endPage - 4);
+                    }
+
+                    for ($i = $startPage; $i <= $endPage; $i++): ?>
+                        <li class="page-item">
+                            <a class="page-link <?= $i == $currentPage ? 'active' : '' ?>" href="?page=akses&p=<?= $i ?>&search=<?= urlencode($search ?? '') ?>">
+                                <?= $i ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <?php if ($currentPage < $totalPages): ?>
+                        <li class="page-item">
+                            <a class="nextBtn"
+                                href="?page=akses&p=<?= $currentPage + 1 ?>&search=<?= urlencode($search ?? '') ?>">
+                            <i class="fa-solid fa-chevron-right"></i></a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
             </div>
-        </div>
+        </main>
     </div>
 </div>
 <?php require_once __DIR__ . '/../partials/footer.php'; ?>

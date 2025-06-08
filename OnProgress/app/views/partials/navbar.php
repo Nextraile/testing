@@ -16,9 +16,11 @@ $role = get_user_role();
       <ul class="links" id="links">
         <li><a href="index.php?page=home">Beranda</a></li>
         <li><a href="index.php?page=list">List Destinasi</a></li>
-        <li><a href="index.php?page=logout">Logout</a></li>
         <?php if (is_admin()): ?>
-          <li><a href="index.php?page=destinasi">Admin Panel</a></li>
+          <li><a href="index.php?page=destinasi">Manajemen Destinasi</a></li>
+        <?php endif; ?>
+        <?php if (is_superadmin()): ?>
+          <li><a href="index.php?page=akses">Manajemen Akses</a></li>
         <?php endif; ?>
       </ul>
 

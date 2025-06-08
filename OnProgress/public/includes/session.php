@@ -34,6 +34,11 @@ function is_admin() {
     return $role === 'admin' || $role === 'superadmin';
 }
 
+function is_superadmin() {
+    $role = get_user_role();
+    return $role === 'superadmin';
+}
+
 // Fungsi untuk cek apakah user sudah login
 function is_logged_in() {
     return isset($_SESSION['user_id']);

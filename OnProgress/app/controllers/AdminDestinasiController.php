@@ -157,7 +157,153 @@ class AdminDestinasiController {
 
             if (move_uploaded_file($files['tmp_name'][$i], $target)) {
                 $this->galeriModel->addGambar($destinasiId, $filename);
+            } else {
+            // Log error jika gagal upload
+            error_log("Gagal mengupload gambar: " . $files['name'][$i]);
+        }
+        }
+        
+    }
+
+    public function edit(int $id) {
+    // Mulai session jika belum
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    //--- AUTHENTICATION & AUTHORIZATION ---
+    if (empty($_SESSION['user_id'])) {
+        header('Location: index.php?page=login');
+        exit;
+    }
+    if (!in_array($_SESSION['role'], ['admin','superadmin'], true)) {
+        header('Location: index.php?page=home');
+        exit;
+    }
+
+    //--- Ambil Data Master untuk form ---
+    $errors            = [];
+    $destinasi         = $this->destinasiModel->getDestinasiById($id);
+    if ($destinasi === null) {
+        $_SESSION['error_message'] = 'Destinasi tidak ditemukan.';
+        header('Location: index.php?page=destinasi');
+        exit;
+    }
+    $kategoriList      = $this->kategoriModel->getAllKategori();
+    $selectedKategori  = $this->kategoriModel->getKategoriByDestinasiId($id);
+    $tiketList         = $this->tiketModel->getTiketByDestinasiId($id);
+    $waktuList         = $this->waktuModel->getWaktuByDestinasiId($id);
+    $gambarList        = $this->galeriModel->getGambarByDestinasiId($id);
+
+    //--- Handle Form Submission ---
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $errors = $this->validate($_POST, $_FILES);
+        if (empty($errors)) {
+            // Update data utama
+            $this->destinasiModel->updateDestinasi($id, $_POST);
+            // Update Kategori
+            $this->kategoriModel->updateDestinasiKategori($id, $_POST['kategori'] ?? []);
+            // Update Tiket
+            if (!empty($_POST['tiket'])) {
+                foreach ($_POST['tiket'] as $tiketKey => $tiketData) {
+                    // Jika kunci mengandung 'new_', berarti data baru
+                    if (strpos($tiketKey, 'new_') === 0) {
+                        // Tambahkan tiket baru
+                        $this->tiketModel->addTiket($id, $tiketData);
+                    } else {
+                        // Update tiket yang sudah ada
+                        $this->tiketModel->updateTiket($tiketKey, $tiketData);
+                    }
+                }
             }
+            
+                        // --- PERBAIKAN: HAPUS TIKET YANG DITANDAI ---
+            if (!empty($_POST['hapus_tiket'])) {
+                echo "Menghapus tiket dengan ID: " . implode(', ', $_POST['hapus_tiket']) . "\n";
+                
+                foreach ($_POST['hapus_tiket'] as $tiketId) {
+                    if ($this->tiketModel->deleteTiket($tiketId)) {
+                        echo "Berhasil hapus tiket ID: $tiketId\n";
+                    } else {
+                        echo "Gagal hapus tiket ID: $tiketId\n";
+                        $errors[] = "Gagal menghapus tiket ID: $tiketId";
+                    }
+                }
+            }
+            // --- PERBAIKAN: WAKTU OPERASIONAL ---
+            // Proses waktu operasional (update yang ada dan tambah yang baru)
+            if (!empty($_POST['waktu'])) {
+                foreach ($_POST['waktu'] as $waktuKey => $waktuData) {
+                    // Jika kunci mengandung 'new_', berarti data baru
+                    if (strpos($waktuKey, 'new_') === 0) {
+                        // Tambahkan waktu baru
+                        $this->waktuModel->addWaktuOperasional($id, $waktuData);
+                    } else {
+                        // Update waktu yang sudah ada
+                        $this->waktuModel->updateWaktuOperasional($waktuKey, $waktuData);
+                    }
+                }
+            }
+
+                        // --- PERBAIKAN: HAPUS WAKTU YANG DITANDAI ---
+            if (!empty($_POST['hapus_waktu'])) {
+                echo "Menghapus waktu dengan ID: " . implode(', ', $_POST['hapus_waktu']) . "\n";
+                
+                foreach ($_POST['hapus_waktu'] as $waktuId) {
+                    if ($this->waktuModel->deleteWaktuOperasional($waktuId)) {
+                        echo "Berhasil hapus waktu ID: $waktuId\n";
+                    } else {
+                        echo "Gagal hapus waktu ID: $waktuId\n";
+                        $errors[] = "Gagal menghapus waktu operasional ID: $waktuId";
+                    }
+                }
+            }
+            // Hapus Gambar
+            if (!empty($_POST['hapus_gambar'])) {
+    foreach ($_POST['hapus_gambar'] as $gambarId) {
+        $gambar = $this->galeriModel->getGambarByGambarId($gambarId);
+        
+        if ($gambar) {
+        if (!defined('UPLOAD_PATH')) {
+            define('UPLOAD_PATH', __DIR__ . '/../../public/assets/img/');
+        }
+            $filePath = UPLOAD_PATH . 'destinasi/' . $gambar['nama_file'];
+            
+            // Hapus file fisik
+            if (file_exists($filePath)) {
+                if (!unlink($filePath)) {
+                    // Tampilkan error langsung di halaman
+                    $errors[] = "Gagal menghapus file: " . $gambar['nama_file'];
+                }
+            } else {
+                $errors[] = "File tidak ditemukan: " . $gambar['nama_file'];
+            }
+            
+            // Hapus dari database
+            if (!$this->galeriModel->deleteGambar($gambarId)) {
+                $errors[] = "Gagal menghapus gambar dari database ID: $gambarId";
+            }
+        } else {
+            $errors[] = "Gambar tidak ditemukan ID: $gambarId";
         }
     }
+}
+            // Tambah Gambar Baru
+            if (!empty($_FILES['gambar']['name'][0])) {
+                $this->simpanGambar($id, $_FILES['gambar']);
+            }
+
+            $_SESSION['success_message'] = 'Destinasi berhasil diperbarui.';
+            // Redirect kembali ke edit page dengan routing yang benar
+            header('Location: ?page=destinasi');
+            exit;
+        }
+    }
+
+    //--- Render View ---  
+    // Pastikan di view form pencarian & pagination Anda menyertakan:
+    // <input type="hidden" name="page" value="admin_destinasi_edit">
+    require_once __DIR__ . '/../views/admin/destinasi/edit.php';
+}
+
 }

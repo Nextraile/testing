@@ -25,10 +25,9 @@ button {
   font-size: inherit;
 }
 
-
 input:focus {
   border: solid #1f1f1f;
-  outline: none
+  outline: none;
 }
 
 /*
@@ -401,22 +400,17 @@ input:-webkit-autofill {
   background-color: #302f2f;
 }
 
-.container {
-  padding: 40px 20px;
-  max-width: 1200px;
+.admin-container {
+  padding: 40px 240px;
+  width: 100%;
+  height: 100dvh;
+  background-color: #f3f4f6;
   margin: auto;
 }
 
-.container h3 {
+.admin-container h3 {
   text-align: center;
   margin-bottom: 30px;
-}
-
-.card-container {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
 }
 
 .card {
@@ -660,7 +654,8 @@ input:-webkit-autofill {
   flex-direction: column;
 }
 
-.form-username-email, .form-password{
+.form-username-email,
+.form-password {
   display: flex;
   width: 100%;
   align-items: center;
@@ -668,13 +663,14 @@ input:-webkit-autofill {
   gap: 20px;
 }
 
-
-.form-username-email .form-group input, .form-password .form-group input {
+.form-username-email .form-group input,
+.form-password .form-group input {
   display: flex;
   width: 100%;
 }
 
-.form-username-email .form-group label, .form-password .form-group label {
+.form-username-email .form-group label,
+.form-password .form-group label {
   font-weight: 500;
   color: #333333;
 }
@@ -775,17 +771,18 @@ input:-webkit-autofill {
     font-size: 16px;
   }
 
-    .form-username-email, .form-password {
+  .form-username-email,
+  .form-password {
     flex-direction: column;
-  align-items: normal;
-  justify-content: normal;
-  gap: 0px;
+    align-items: normal;
+    justify-content: normal;
+    gap: 0px;
   }
 
   .form-group {
     margin-bottom: 0;
   }
-  
+
   .upload-btn {
     display: block;
     width: 100%;
@@ -810,7 +807,7 @@ input:-webkit-autofill {
     margin-top: 25px;
   }
 
-    .save-cancel-buttons {
+  .save-cancel-buttons {
     display: flex;
     justify-content: center;
     gap: 10px;
@@ -844,89 +841,338 @@ input:-webkit-autofill {
 }
 
 @media (max-width: 400px) {
-    .image-profile {
-      width: 120px;
-      height: 120px;
-      border: 2px solid white;
-    }
+  .image-profile {
+    width: 120px;
+    height: 120px;
+    border: 2px solid white;
   }
+}
 
 /*
     ADMIN PANEL
 */
 
 .card-header {
-    background-color: #f8f9fa;
-    padding: 0.75rem 1.25rem;
-    border-bottom: 1px solid #dee2e6;
-    font-weight: 600;
+  background-color: #f8f9fa;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid #dee2e6;
+  font-weight: 600;
 }
 
 .card-body {
-    padding: 1.25rem;
+  padding: 1.25rem;
 }
 
 .btn-remove-tiket,
 .btn-remove-waktu {
-    margin-top: 1.5rem;
+  margin-top: 1.5rem;
 }
 
-/* ... (CSS sebelumnya) ... */
 
-/* Style untuk preview gambar */
-.preview-item {
-    position: relative;
-    display: inline-block;
-    margin: 5px;
-    transition: transform 0.2s;
+/* Content Area */
+.content-area {
+  flex: 1;
+  background-color: white;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.preview-item:hover {
-    transform: scale(1.05);
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.preview-item img {
-    display: block;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.content-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
 }
 
-.preview-item button {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.btn-add {
+  background-color: #2c2c2c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.btn-add:hover {
+  background-color: #404040;
+}
+
+.btn-add::before {
+  content: "+ ";
+}
+
+/* Search */
+.search-container {
+  margin-bottom: 20px;
+  display: flex;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: white;
+  margin-right: 0.5rem;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #1f1f1f;
+  background-color: white;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+th,
+td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+td {
+  font-size: 14px;
+  color: #555;
+}
+
+tr:hover {
+  background-color: #f8f9fa;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.rating {
+  color: #ffd700;
+  font-weight: 500;
+}
+
+/* Pagination */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.total-data {
+  color: #666;
+  font-size: 14px;
+}
+
+.pagination {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.pagination a {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.pagination a:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination li .active {
+  background-color: #ffd700;
+  border-color: #ffd700;
+  color: #2c2c2c;
+  font-weight: 500;
+}
+
+/* RESPONSIVE ADMIN PANEL */
+@media (max-width: 1150px) {
+
+  .admin-container {
+    padding: 40px 200px;
+  }
+  .main-content {
+    flex-direction: column;
+  }
+
+  .content-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .table-container {
+    overflow-x: scroll;
+  }
+
+  table {
+    min-width: 600px;
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+
+  .admin-container {
+    padding: 40px 80px;
+  }
+  .main-content {
+    flex-direction: column;
+  }
+
+  .content-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .table-container {
+    overflow-x: scroll;
+  }
+
+  table {
+    min-width: 600px;
+  }
+}
+
+@media (max-width: 600px) {
+
+.admin-container .search-input, .admin-container .btn {
+  align-items: center;
+    height: 40px;
+  }
+  .content-header{
+    margin-bottom: 10px;
+  }
+  .content-area {
+    padding: 20px;
+  }
+  .admin-container {
+    padding: 40px 40px;
+  }
+  .content-title {
+    font-size: 18px;
+  }
+
+  .text-muted {
     font-size: 14px;
-    z-index: 10;
+  }
+  .btn-add {
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+  
+  .admin-container .pagination-container a {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
 }
 
-/* Styling dasar untuk admin panel */
+@media (max-width: 400px) {
+
+  .admin-container .btn-black {
+    font-size: 10px;
+    padding: 6px 12px;
+    height: fit-content;
+    width: fit-content;
+  }
+  .admin-container .search-input {
+    font-size: 12px;
+    padding: 6px 12px;
+    height: fit-content;
+  }
+  .admin-container {
+    padding: 40px 20px;
+  }
+
+  .content-title {
+    font-size: 16px;
+  }
+
+  .text-muted {
+    font-size: 12px;
+  }
+
+  .btn-add {
+    font-size: 10px;
+    padding: 6px 12px;
+  }
+
+  .admin-container .pagination-container a {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+}
+
 .card-add {
-    margin-bottom: 1.5rem;
-    border: 1px solid #dee2e6;
-    border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
 }
 
 .card-header {
-    background-color: #f8f9fa;
-    padding: 0.75rem 1.25rem;
-    border-bottom: 1px solid #dee2e6;
-    font-weight: 600;
+  background-color: #f8f9fa;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid #dee2e6;
+  font-weight: 600;
 }
 
 .card-body {
-    padding: 1.25rem;
+  padding: 1.25rem;
 }
 
 .btn-remove-tiket,
 .btn-remove-waktu {
-    margin-top: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 /*

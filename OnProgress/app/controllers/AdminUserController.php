@@ -53,11 +53,11 @@ class AdminUserController {
             
             // Redirect ulang, jaga routing dan pagination/search
             $qs = http_build_query([
-                'page'   => 'admin_user',
+                'page'   => 'akses',
                 'p'      => $currentPage,
                 'search' => $search,
             ]);
-            header("Location: /public/index.php?{$qs}");
+            header("Location: ?{$qs}");
             exit;
         }
         

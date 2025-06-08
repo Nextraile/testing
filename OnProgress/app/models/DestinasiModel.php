@@ -115,5 +115,41 @@ class DestinasiModel {
             return false;
         }
     }
+
+    public function getDestinasiById(int $id): ?array {
+        $sql  = "SELECT * FROM destinasi WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row === false ? null : $row;
+    }
+
+    public function updateDestinasi(int $id, array $data): bool {
+        $sql = "UPDATE destinasi SET
+                    nama                   = :nama,
+                    deskripsi              = :deskripsi,
+                    deskripsi_rekomendasi  = :deskripsi_rekomendasi,
+                    alamat                 = :alamat,
+                    no_telepon             = :no_telepon,
+                    facebook               = :facebook,
+                    instagram              = :instagram,
+                    gmaps_link             = :gmaps_link
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':nama',                  $data['nama'],                  PDO::PARAM_STR);
+        $stmt->bindValue(':deskripsi',             $data['deskripsi'],             PDO::PARAM_STR);
+        $stmt->bindValue(':deskripsi_rekomendasi', $data['deskripsi_rekomendasi'], PDO::PARAM_STR);
+        $stmt->bindValue(':alamat',                $data['alamat'],                PDO::PARAM_STR);
+        $stmt->bindValue(':no_telepon',            $data['no_telepon'],            PDO::PARAM_STR);
+        $stmt->bindValue(':facebook',              $data['facebook'],              PDO::PARAM_STR);
+        $stmt->bindValue(':instagram',             $data['instagram'],             PDO::PARAM_STR);
+        $stmt->bindValue(':gmaps_link',            $data['gmaps_link'],            PDO::PARAM_STR);
+        $stmt->bindValue(':id',                    $id,                            PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
     
 }
