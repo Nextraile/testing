@@ -1,19 +1,26 @@
 <?php
-// File: app/controllers/HomeController.php
-
-// Panggil model yang diperlukan
 require_once __DIR__ . '/../models/DestinasiModel.php';
 
 class HomeController {
+    private $model;
+    
+    public function __construct($db) {
+        $this->model = new DestinasiModel($db);
+    }
+    
     public function index() {
-        // Dapatkan koneksi database dari global scope
-        // global $db;
+        // Ambil destinasi rekomendasi
+        $rekomendasi = $this->model->getDestinasiRekomendasi(3);
         
-        // // Buat instance model
-        // $model = new DestinasiModel($db);
-        
-        // // Ambil data destinasi dari model
-        // $destinasiList = $model->getAll();
+        // Tangani pencarian
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['search'])) {
+            $keyword = trim($_GET['search']);
+            if (!empty($keyword)) {
+                // Redirect ke halaman list destinasi dengan hasil pencarian
+                header("Location: index.php?page=list&search=" . urlencode($keyword));
+                exit;
+            }
+        }
         
         // Tampilkan view
         require_once __DIR__ . '/../views/pages/home.php';

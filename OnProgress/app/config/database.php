@@ -23,6 +23,6 @@ try {
     die("Koneksi database gagal: " . $e->getMessage());
 }
 
-define('BASE_URL', '/PJBL/OnProgress/public/');
+define('BASE_URL', '/discoversemarang/public/');
 
 ?>

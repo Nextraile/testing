@@ -16,11 +16,11 @@ class AdminUserController {
         
         // --- AUTH & AUTHZ ---
         if (empty($_SESSION['user_id'])) {
-            header('Location: /public/index.php?page=login');
+            header('Location: index.php?page=login');
             exit;
         }
         if (!in_array($_SESSION['role'], ['admin', 'superadmin'], true)) {
-            header('Location: /public/index.php?page=home');
+            header('Location: index.php?page=home');
             exit;
         }
         

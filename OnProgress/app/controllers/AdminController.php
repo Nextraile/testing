@@ -10,6 +10,20 @@ class AdminController {
     
     public function destinasi() {
 
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // --- AUTH & AUTHZ ---
+        if (empty($_SESSION['user_id'])) {
+            header('Location: index.php?page=login');
+            exit;
+        }
+        if (!in_array($_SESSION['role'], ['admin', 'superadmin'], true)) {
+            header('Location: index.php?page=home');
+            exit;
+        }
+
         // Konfigurasi pagination
         $perPage = 5;
         // Gunakan 'p' untuk pagination, misal ?route=destinasi&p=2

@@ -37,6 +37,16 @@ class WaktuOperasionalModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    
+    public function getWaktuByDId(int $destinasiId): array {
+        $sql = "SELECT * FROM waktu_operasional WHERE destinasi_id = :destinasi_id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':destinasi_id', $destinasiId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
     public function updateWaktuOperasional(int $id, array $data): bool {
         $sql = "UPDATE waktu_operasional SET
                     nama_hari = :nama_hari,
@@ -60,5 +70,52 @@ class WaktuOperasionalModel {
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
         return $stmt->execute();
+    }
+
+    public function getOperasionalSummary($destinasi_id) {
+        $allOperasional = $this->getWaktuByDId($destinasi_id);
+        
+        $weekdayBuka = [];
+        $weekdayTutup = [];
+        $weekendBuka = [];
+        $weekendTutup = [];
+        $keterangan = [];
+
+        $weekdays = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+        $weekends = ['Sabtu', 'Minggu'];
+
+        foreach ($allOperasional as $op) {
+            if (in_array($op->nama_hari, $weekdays)) {
+                if ($op->jam_buka) $weekdayBuka[] = strtotime($op->jam_buka);
+                if ($op->jam_tutup) $weekdayTutup[] = strtotime($op->jam_tutup);
+            } else if (in_array($op->nama_hari, $weekends)) {
+                if ($op->jam_buka) $weekendBuka[] = strtotime($op->jam_buka);
+                if ($op->jam_tutup) $weekendTutup[] = strtotime($op->jam_tutup);
+            }
+            
+            if ($op->keterangan) {
+                $keterangan[] = $op->keterangan;
+            }
+        }
+
+        $result = [
+            'weekday' => null,
+            'weekend' => null,
+            'keterangan' => array_unique($keterangan)
+        ];
+
+        if (!empty($weekdayBuka) && !empty($weekdayTutup)) {
+            $minBuka = min($weekdayBuka);
+            $maxTutup = max($weekdayTutup);
+            $result['weekday'] = date('H:i', $minBuka) . ' - ' . date('H:i', $maxTutup);
+        }
+
+        if (!empty($weekendBuka) && !empty($weekendTutup)) {
+            $minBuka = min($weekendBuka);
+            $maxTutup = max($weekendTutup);
+            $result['weekend'] = date('H:i', $minBuka) . ' - ' . date('H:i', $maxTutup);
+        }
+
+        return $result;
     }
 }

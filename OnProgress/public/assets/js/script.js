@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const div = document.createElement('div');
         div.className = 'tiket-item mb-3 border p-3';
         div.innerHTML = `
-            <div class="row">
+
+            <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem;">
                 <div class="col-md-4">
                     <label class="form-label">Kategori Pengunjung</label>
                     <input type="text" name="tiket[${index}][kategori_pengunjung]" class="form-control">
@@ -45,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <label class="form-label">Harga Weekend (Rp)</label>
                     <input type="number" name="tiket[${index}][harga_weekend]" class="form-control">
                 </div>
-                <div class="col-md-2 d-flex align-items-end">
-                    <button type="button" class="btn btn-danger btn-remove-tiket">Hapus</button>
+                <div style="margin-top: 2rem;">
+                    <button type="button" class="btn btn-remove-tiket">Hapus</button>
                 </div>
             </div>
             <div class="mt-2">
@@ -67,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const div = document.createElement('div');
         div.className = 'waktu-item mb-3 border p-3';
         div.innerHTML = `
-            <div class="row">
+            <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem;">
                 <div class="col-md-3">
                     <label class="form-label">Hari</label>
                     <select name="waktu[${index}][nama_hari]" class="form-select">
@@ -88,13 +89,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     <label class="form-label">Jam Tutup</label>
                     <input type="time" name="waktu[${index}][jam_tutup]" class="form-control" value="17:00">
                 </div>
-                <div class="col-md-3 d-flex align-items-end">
-                    <button type="button" class="btn btn-danger btn-remove-waktu">Hapus</button>
+                <div style="margin-top: 2rem;">
+                    <button type="button" class="btn btn-remove-waktu">Hapus</button>
                 </div>
             </div>
             <div class="mt-2">
-                <label class="form-label">Keterangan (Opsional)</label>
-                <input type="text" name="waktu[${index}][keterangan]" class="form-control" placeholder="Contoh: Libur Nasional">
+                <label class="form-label">Keterangan</label>
+                <input type="text" name="waktu[${index}][keterangan]" class="form-control">
             </div>
         `;
         
@@ -218,8 +219,8 @@ document.getElementById('btn-add-waktu-edit').addEventListener('click', function
             </div>
         </div>
         <div class="mt-2">
-            <label class="form-label">Keterangan (Opsional)</label>
-            <input type="text" name="waktu[${newId}][keterangan]" class="form-control" placeholder="Contoh: Libur Nasional">
+            <label class="form-label">Keterangan</label>
+            <input type="text" name="waktu[${newId}][keterangan]" class="form-control">
         </div>
     `;
     
@@ -241,4 +242,71 @@ document.querySelectorAll('.btn-remove-waktu').forEach(button => {
         item.remove();
     });
 });
+});
+
+// Load More Reviews Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const reviewItems = document.querySelectorAll('.review-item');
+    const itemsPerPage = 3;
+    let visibleItems = itemsPerPage;
+    
+    // Initially hide extra reviews
+    for (let i = visibleItems; i < reviewItems.length; i++) {
+        reviewItems[i].style.display = 'none';
+    }
+    
+    if (reviewItems.length <= itemsPerPage) {
+        loadMoreBtn.style.display = 'none';
+    }
+    
+    // Load more functionality
+    loadMoreBtn.addEventListener('click', function() {
+        visibleItems += itemsPerPage;
+        
+        for (let i = 0; i < visibleItems; i++) {
+            if (reviewItems[i]) {
+                reviewItems[i].style.display = 'block';
+            }
+        }
+        
+        if (visibleItems >= reviewItems.length) {
+            loadMoreBtn.style.display = 'none';
+        }
+    });
+    
+    // Star rating hover effect
+    const stars = document.querySelectorAll('.star-rating label');
+    stars.forEach(star => {
+        star.addEventListener('mouseover', function() {
+            const ratingValue = this.getAttribute('for').split('-')[1];
+            highlightStars(ratingValue);
+        });
+        
+        star.addEventListener('mouseout', function() {
+            const checkedStar = document.querySelector('.star-rating input:checked');
+            if (checkedStar) {
+                highlightStars(checkedStar.value);
+            } else {
+                resetStars();
+            }
+        });
+    });
+    
+    function highlightStars(value) {
+        stars.forEach(star => {
+            const starValue = star.getAttribute('for').split('-')[1];
+            if (starValue <= value) {
+                star.style.color = '#ffc107';
+            } else {
+                star.style.color = '#ddd';
+            }
+        });
+    }
+    
+    function resetStars() {
+        stars.forEach(star => {
+            star.style.color = '#ddd';
+        });
+    }
 });

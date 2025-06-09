@@ -6,20 +6,20 @@
         <main class="content-area">
             <div class="content-header">
                 <h1 class="content-title">Management Destinasi</h1>
-                <a href="?page=create" class="btn-add btn-primary">Tambah Destinasi</a>
+                <a href="?page=create" class="btn btn-add btn-yellow" style="width: fit-content;">Tambah Destinasi</a>
             </div>
 
             <?php if (isset($_SESSION['success_message'])): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div class="alert page-add">
                     <?= $_SESSION['success_message'] ?>
-                </div>
+                    </div>
                 <?php unset($_SESSION['success_message']); ?>
             <?php endif; ?>
 
             <?php if (isset($_SESSION['error_message'])): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div class="alert page-add">
                     <?= $_SESSION['error_message'] ?>
-                </div>
+                    </div>
                 <?php unset($_SESSION['error_message']); ?>
             <?php endif; ?>
 

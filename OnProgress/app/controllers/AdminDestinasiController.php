@@ -23,6 +23,20 @@ class AdminDestinasiController {
     }
 
     public function create() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // --- AUTH & AUTHZ ---
+        if (empty($_SESSION['user_id'])) {
+            header('Location: index.php?page=login');
+            exit;
+        }
+        if (!in_array($_SESSION['role'], ['admin', 'superadmin'], true)) {
+            header('Location: index.php?page=home');
+            exit;
+        }
+
         $errors = [];
         $kategoriList = $this->kategoriModel->getAllKategori();
 
@@ -53,8 +67,12 @@ class AdminDestinasiController {
                 if (!empty($_FILES['gambar']['name'][0])) {
                     $this->simpanGambar($destinasiId, $_FILES['gambar']);
                 }
+                
+                if (!empty($_SESSION['success_message'])) {
+                    $_SESSION['success_message'] = 'Destinasi berhasil ditambahkan.';
+                }
 
-                header('Location: ?page=destinasi');
+                header('Location: index.php?page=destinasi');
                 exit;
             }
         }
@@ -295,14 +313,11 @@ class AdminDestinasiController {
 
             $_SESSION['success_message'] = 'Destinasi berhasil diperbarui.';
             // Redirect kembali ke edit page dengan routing yang benar
-            header('Location: ?page=destinasi');
+            header('Location: index.php?page=destinasi');
             exit;
         }
     }
 
-    //--- Render View ---  
-    // Pastikan di view form pencarian & pagination Anda menyertakan:
-    // <input type="hidden" name="page" value="admin_destinasi_edit">
     require_once __DIR__ . '/../views/admin/destinasi/edit.php';
 }
 

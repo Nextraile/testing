@@ -1,47 +1,60 @@
 <?php
 require_once __DIR__ . '/../partials/header.php';
 ?>
-<section class="hero">
-  <h2>Temukan Keindahan Semarang</h2>
-  <p>Jelajahi berbagai destinasi wisata menarik di Kota Lumpia</p>
-  <div class="search-bar">
-        <input type="text" placeholder="Cari destinasi wisata..." />
-        <button>
+<div style="background-color: #f3f4f6;">
+  <section class="hero">
+    <h2>Temukan Keindahan Semarang</h2>
+    <p>Jelajahi berbagai destinasi wisata menarik di Kota Lumpia</p>
+    <form class="search-form" action="?page=list" method="GET">
+      <div class="search-bar">
+        <input type="text" name="search" placeholder="Cari destinasi wisata..." />
+        <button type="submit">
           <i class="fas fa-search"></i>
         </button>
       </div>
-</section>
-<section class="container">
-  <h3>Rekomendasi Destinasi</h3>
-  <div class="card-container">
-    <div class="card">
-      <img src="lawang sewu.jpg" alt="Lawang Sewu">
-      <div class="card-content">
-        <div class="card-title">Lawang Sewu <span class="card-rating">★ 4.8</span></div>
-        <p>Museum bersejarah dengan banyak pintu yang ikonik di pusat kota Semarang.</p>
-        <div class="tags"><span>Sejarah</span></div>
-      </div>
+    </form>
+
+  </section>
+  <section class="container" style="margin: 2rem;">
+    <h1 style="text-align: center; font-size: 2rem; margin: 1rem;">Rekomendasi Destinasi</h1>
+    <div class="card-container" style="display: flex; justify-content: center; align-items: flex-start; gap: 2rem; ">
+      <?php if (count($rekomendasi) > 0): ?>
+        <?php foreach ($rekomendasi as $destinasi): ?>
+          <div class="card"
+            style="border: none; box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.1); -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.1); -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.1); cursor: pointer;"
+            onclick="window.location='?page=detail&id=<?= $destinasi['id'] ?>'">
+            <img src="<?= BASE_URL ?>assets/img/destinasi/<?= $destinasi['gambar'] ?>" alt="<?= $destinasi['gambar'] ?>">
+            <div class="card-content" style="padding: 1rem;">
+              <h4 class="card-title"><?= htmlspecialchars($destinasi['nama']) ?><span class="card-rating"><i
+                    class="fa-solid fa-star" style="color: #ffd43b;"></i>
+                  <?= number_format($destinasi['rating'], 1) ?>
+                </span>
+              </h4>
+              <p class="card-text text-muted"><?= htmlspecialchars($destinasi['deskripsi_rekomendasi']) ?></p>
+              <div class="tags">
+                <?php
+                $kategoriList = explode(', ', $destinasi['kategori']);
+                foreach ($kategoriList as $kategori):
+                  if (!empty(trim($kategori))):
+                    ?>
+                    <span><?= htmlspecialchars($kategori) ?></span>
+                  
+
+                  <?php
+                  endif;
+                endforeach;
+                ?></div>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <div class="col-12 text-center py-5">
+          <i class="bi bi-info-circle display-5 text-muted mb-3"></i>
+          <p class="h5 text-muted">Belum ada destinasi rekomendasi</p>
+        </div>
+      <?php endif; ?>
     </div>
-    <div class="card">
-      <img src="sam poo kong.jpg" alt="Sam Poo Kong">
-      <div class="card-content">
-        <div class="card-title">Sam Poo Kong <span class="card-rating">★ 4.5</span></div>
-        <p>Museum bersejarah dengan banyak pintu yang ikonik di pusat kota Semarang.</p>
-        <div class="tags"><span>Sejarah</span><span>Religi</span></div>
-      </div>
-    </div>
-    <div class="card highlight">
-      <img src="umbul sidomukti.jpg" alt="Umbul Sidomukti">
-      <div class="card-content">
-        <div class="card-title">Umbul Sidomukti <span class="card-rating">★ 4.3</span></div>
-        <p>Museum bersejarah dengan banyak pintu yang ikonik di pusat kota Semarang.</p>
-        <div class="tags"><span>Alam</span></div>
-      </div>
-    </div>
-  </div>
-  <button class="see-all-button">Lihat Semua Destinasi</button>
-</section>
-<?php
-// Panggil footer
-require_once __DIR__ . '/../partials/footer.php';
-?>
+  </section>
+  <?php
+  // Panggil footer
+  require_once __DIR__ . '/../partials/footer.php';

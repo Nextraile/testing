@@ -26,7 +26,7 @@
             
                 <form method="GET">
                     <div class="search-container">
-                    <input type="hidden" name="page" value="destinasi">
+                    <input type="hidden" name="page" value="akses">
                     <input type="text" name="search" class="search-input"
                         placeholder="Cari username atau email..." value="<?= htmlspecialchars($search ?? '') ?>">
                     <button type="submit" class="btn btn-black" style="font-weight: normal;">Cari</button>

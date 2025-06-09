@@ -12,13 +12,20 @@ $id = $_GET['id'] ?? 0;
 switch($page) {
     case 'home':
         require_once __DIR__ . '/../app/controllers/HomeController.php';
-        $controller = new HomeController();
+        $controller = new HomeController($db);
         $controller->index();
         break;
         
+    case 'list':
+        require_once __DIR__ . '/../app/controllers/DestinasiController.php';
+        $controller = new DestinasiController();
+        $controller->list();
+        break;
+
     case 'detail':
         require_once __DIR__ . '/../app/controllers/DestinasiController.php';
         $controller = new DestinasiController();
+        $controller->detail($id);
         break;
     
      case 'login':
@@ -92,6 +99,7 @@ switch($page) {
         $controller = new AdminDestinasiController($db);
         $controller->edit($id);
         break;
+
     default:
         http_response_code(404);
         echo "Halaman tidak ditemukan";
